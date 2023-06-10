@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Form Example</title>
+    <title>Data Form Sheet</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="script.js"></script>
 </head>
 <body>
-    <h1>Form Example</h1>
-    <form action="/submit" method="POST">
+    <h1>Data Form Sheet</h1>
+    <form id="dataForm">
         <div>
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
@@ -28,5 +28,9 @@
             <button type="submit">Submit</button>
         </div>
     </form>
+
+    <div id="response"></div>
+
+    <script src="script.js"></script>
 </body>
 </html>

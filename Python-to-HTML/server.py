@@ -1,16 +1,20 @@
-import http.server
-import socketserver
+from flask import Flask, render_template, request, jsonify
 
-# Set the port number for the server
-PORT = 8000
+app = Flask(__name__)
 
-# Define the request handler class
-class MyRequestHandler(http.server.SimpleHTTPRequestHandler):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, directory=".", **kwargs)
+@app.route("/")
+def index():
+    return render_template("index.html")
 
-# Create the server
-with socketserver.TCPServer(("", PORT), MyRequestHandler) as httpd:
-    print(f"Server started on port {PORT}")
-    # Start the server
-    httpd.serve_forever()
+@app.route("/submit", methods=["POST"])
+def submit():
+    data = request.get_json() # Get data from the request
+    # Process the data as needed (e.g., save to database, perform calculations, etc.)
+
+    # Prepare the response message
+    message = "Data submitted successfully!"
+
+    return jsonify({"message": message})
+
+if __name__ == "__main__":
+    app.run()
