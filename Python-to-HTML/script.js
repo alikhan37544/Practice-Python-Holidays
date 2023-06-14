@@ -1,37 +1,25 @@
-document.getElementById("dataForm").addEventListener("submit", function(event) {
+document.getElementById("myForm").addEventListener("submit", function(event) {
     event.preventDefault(); // Prevent form submission
-
+    
     // Get form data
-    var name = document.getElementById("name").value;
-    var age = document.getElementById("age").value;
-    var email = document.getElementById("email").value;
-    var subscribe = document.getElementById("subscribe").checked;
-
-    // Create data object
-    var data = {
-        name: name,
-        age: age,
-        email: email,
-        subscribe: subscribe
+    var formData = new FormData(this);
+    
+    // Create an HTTP request
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "submit_form.py", true);
+    
+    // Set the content type header to send form data
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    
+    // Define the callback function when the request completes
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        console.log(xhr.responseText);
+        // You can add code here to handle the response from the Python file
+      }
     };
-
-    // Send data to Python server
-    fetch("/submit", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(responseData) {
-        // Display response message
-        var responseDiv = document.getElementById("response");
-        responseDiv.innerHTML = responseData.message;
-    })
-    .catch(function(error) {
-        console.log(error);
-    });
-});
+    
+    // Send the form data
+    xhr.send(new URLSearchParams(formData));
+  });
+  
