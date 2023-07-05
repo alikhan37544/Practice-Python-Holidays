@@ -12,7 +12,7 @@ class TaskManager:
         print("6. Exit")
 
     def view_tasks(self):
-        if len(self.tasks) == 0:
+        if not self.tasks:
             print("No tasks found.")
         else:
             print("Tasks:")
@@ -28,31 +28,43 @@ class TaskManager:
 
     def edit_task(self):
         self.view_tasks()
-        task_number = int(input("Enter the task number to edit: "))
-        if task_number > 0 and task_number <= len(self.tasks):
+        task_number = self.get_task_number("Enter the task number to edit: ")
+        if task_number is not None:
             new_description = input("Enter the new task description: ")
-            self.tasks[task_number - 1]["description"] = new_description
+            self.tasks[task_number]["description"] = new_description
             print("Task edited successfully.")
         else:
             print("Invalid task number.")
 
     def delete_task(self):
         self.view_tasks()
-        task_number = int(input("Enter the task number to delete: "))
-        if task_number > 0 and task_number <= len(self.tasks):
-            del self.tasks[task_number - 1]
+        task_number = self.get_task_number("Enter the task number to delete: ")
+        if task_number is not None:
+            del self.tasks[task_number]
             print("Task deleted successfully.")
         else:
             print("Invalid task number.")
 
     def mark_task_completed(self):
         self.view_tasks()
-        task_number = int(input("Enter the task number to mark as completed: "))
-        if task_number > 0 and task_number <= len(self.tasks):
-            self.tasks[task_number - 1]["completed"] = True
+        task_number = self.get_task_number("Enter the task number to mark as completed: ")
+        if task_number is not None:
+            self.tasks[task_number]["completed"] = True
             print("Task marked as completed.")
         else:
             print("Invalid task number.")
+
+    def get_task_number(self, prompt):
+        task_count = len(self.tasks)
+        if task_count == 0:
+            return None
+        while True:
+            task_number = input(prompt)
+            if task_number.isdigit():
+                task_number = int(task_number)
+                if 1 <= task_number <= task_count:
+                    return task_number - 1
+            print("Invalid task number. Please try again.")
 
     def run(self):
         while True:
